@@ -27,9 +27,14 @@ app.get('/', (req, res) => {
     res.send('Welcome to Notes App API server')
 })
 
-app.use('/users', userRouter)
-app.use('/notes', noteRouter)
+app.use('/api/users', userRouter)
+app.use('/api/notes', noteRouter)
 
 app.use(errorHandler)
+
+// unknown path
+app.use((req, res) => {
+    res.status(404).json({ error: 'path not found' })
+})
 
 module.exports = app
