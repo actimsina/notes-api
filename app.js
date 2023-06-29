@@ -1,22 +1,12 @@
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
-const mongoose = require('mongoose')
 
 const userRouter = require('./routes/user_routes')
 const errorHandler = require('./middlewares/error_handler')
 const noteRouter = require('./routes/note_routes')
 
-const db_uri = process.env.NODE_ENV === 'test'
-    ? process.env.TEST_DB_URI
-    : process.env.DB_URI
-
-mongoose.connect(db_uri)
-    .then(() => console.log(`connected to ${db_uri} server`))
-    .catch(err => {
-        console.error(err)
-        process.exit(1)
-    })
+require('./config/db_config')
 
 const app = express()
 
