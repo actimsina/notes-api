@@ -4,7 +4,8 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 
 const userRouter = require('./routes/user_routes')
-const errorHandler = require('./middlewares/errorHandler')
+const errorHandler = require('./middlewares/error_handler')
+const noteRouter = require('./routes/note_routes')
 
 const db_uri = process.env.NODE_ENV === 'test'
     ? process.env.TEST_DB_URI
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/users', userRouter)
+app.use('/notes', noteRouter)
 
 app.use(errorHandler)
 
