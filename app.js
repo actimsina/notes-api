@@ -17,8 +17,8 @@ app.get('/', (req, res) => {
     res.send('Welcome to Notes App API server')
 })
 
-app.use('/api/users', userRouter)
-app.use('/api/notes', noteRouter)
+app.use('/users', userRouter)
+app.use('/notes', noteRouter)
 
 app.use(errorHandler)
 
