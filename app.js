@@ -11,7 +11,7 @@ require('./config/db_config')
 
 const app = express()
 
-app.use(cors())
+app.use(cors('*'))
 app.use(morgan('tiny'))
 app.use(express.json())
 
