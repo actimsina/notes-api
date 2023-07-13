@@ -7,7 +7,8 @@
     "test": "jest --runInBand --watch",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "coverage": "jest --runInBand --coverage --detectOpenHandles"
+    "coverage": "jest --runInBand --coverage --detectOpenHandles",
+    "start:test": "NODE_ENV=test node index.js"
   },
   "keywords": [],
   "author": "",
