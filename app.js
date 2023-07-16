@@ -14,6 +14,7 @@ const app = express()
 app.use(cors('*'))
 app.use(morgan('tiny'))
 app.use(express.json())
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
     res.send('Welcome to Notes App API server')
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 
 app.use('/users', userRouter)
 app.use('/notes', noteRouter)
+
 
 app.use(errorHandler)
 

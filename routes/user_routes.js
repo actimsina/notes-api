@@ -1,8 +1,9 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-
+const { verifyUser } = require('../middlewares/auth_handler')
 const User = require('../models/User')
+const upload = require('../middlewares/img_upload')
 
 const router = express.Router()
 
@@ -64,6 +65,35 @@ router.post('/login', (req, res, next) => {
                     })
             })
         }).catch(next)
+})
+
+router.get('/profile', verifyUser, (req, res, next) => {
+    User.findOne({ _id: req.user.id })
+        .then((user) => {
+            if (user) {
+                res.json({ status: 'success', user })
+            }
+        }).catch(next)
+})
+
+router.put('/profile', verifyUser, (req, res, next) => {
+    User.findOne({ _id: req.user.id })
+        .then((user) => {
+            if (user) {
+                const { username, fullname, picture } = req.body
+                user.username = username || user.username
+                user.fullname = fullname || user.fullname
+                user.picture = picture || user.picture
+                user.save()
+                    .then((user) => {
+                        res.json({ status: 'update profile success', user })
+                    }).catch(next)
+            }
+        }).catch(next)
+})
+
+router.post('/upload', verifyUser, upload.single('picture'), (req, res, next) => {
+    res.json({ status: 'upload success', file: req.file })
 })
 
 module.exports = router
