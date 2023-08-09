@@ -1,6 +1,10 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const sharp = require('sharp')
+const fs = require('fs')
+const path = require('path')
+
 const { verifyUser } = require('../middlewares/auth_handler')
 const User = require('../models/User')
 const upload = require('../middlewares/img_upload')
@@ -92,7 +96,16 @@ router.put('/profile', verifyUser, (req, res, next) => {
         }).catch(next)
 })
 
-router.post('/upload', verifyUser, upload.single('picture'), (req, res, next) => {
+router.post('/upload', verifyUser, upload.single('picture'), async (req, res, next) => {
+    const { filename } = req.file
+    console.log(req.file)
+    await sharp(req.file.buffer)
+        .resize(200, 200)
+        .jpeg({ quality: 90 })
+        .toFile(path.resolve(req.file.destination, 'resized', filename))
+
+    fs.unlinkSync(req.file.path)
+
     res.json({ status: 'upload success', file: req.file })
 })
 
